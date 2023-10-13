@@ -1,19 +1,30 @@
 #!/bin/bash
 
-echo "Nom de l'hôte : $(hostname)"
+# Informations sur la RAM
+total_ram=$(free -h | awk '/^Mem:/ {print $2}')
+used_ram=$(free -h | awk '/^Mem:/ {print $3}')
+free_ram=$(free -h | awk '/^Mem:/ {print $4}')
 
-echo "Adresse IP : $(hostname -I)"
-n
-echo "Système d'exploitation : $(cat /etc/os-release | grep PRETTY_NAME | cut -d'=' -f2 | tr -d '"')"
+# Informations sur le processeur
+cpu_model=$(cat /proc/cpuinfo | grep 'model name' | uniq | cut -d':' -f2 | sed -e 's/^[ \t]*//')
+cpu_cores=$(nproc)
 
-echo "Version du noyau : $(uname -r)"
+# Informations sur le système
+os_version=$(cat /etc/os-release | grep 'PRETTY_NAME' | cut -d'=' -f2 | tr -d '"')
+kernel_version=$(uname -r)
 
-echo "Mémoire RAM disponible : $(free -h | awk '/Mem/{print $2}')"
+# Affichage des informations
+echo "Informations sur la RAM:"
+echo "Total: $total_ram"
+echo "Utilisée: $used_ram"
+echo "Libre: $free_ram"
+echo
 
-echo "Espace disque disponible : $(df -h / | awk 'NR==2{print $4}')"
+echo "Informations sur le processeur:"
+echo "Modèle: $cpu_model"
+echo "Nombre de cœurs: $cpu_cores"
+echo
 
-echo "Utilisateurs connectés :"
-who
-
-echo "Processus en cours d'exécution :"
-ps aux
+echo "Informations sur le système:"
+echo "Système d'exploitation: $os_version"
+echo "Version du noyau: $kernel_version"
