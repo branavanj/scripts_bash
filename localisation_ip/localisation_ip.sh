@@ -15,8 +15,8 @@ donnees=$(curl $lien -s)
 statut=$(echo $donnees | jq '.status' -r)
 
 if [[ $statut == "success" ]]; then
-	cite=$(echo $donnees | jq '.city' -r)
+    ville=$(echo $donnees | jq '.city' -r)
 	nomRegion=$(echo $donnees | jq '.regionName' -r)
 	pays=$( echo $donnees | jq '.country' -r)
-	echo $cite, $nomRegion en $pays.
+	echo $ville, $nomRegion en $pays.
 fi
